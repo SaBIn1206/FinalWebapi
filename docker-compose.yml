@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: bakeryhub-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: bakeryhub
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - bakeryhub-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: bakeryhub-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: mongodb://admin:admin123@mongodb:27017/bakeryhub?authSource=admin
+      JWT_SECRET: ${JWT_SECRET:-change_me_to_a_random_string_at_least_32_chars}
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:3001
+    depends_on:
+      - mongodb
+    networks:
+      - bakeryhub-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: bakeryhub-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+    depends_on:
+      - backend
+    networks:
+      - bakeryhub-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mongodb_data:
+
+networks:
+  bakeryhub-network:
+    driver: bridge
