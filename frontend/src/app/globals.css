@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * BakeryHub Design System
+ * Single source of truth for color, type, and surface tokens.
+ * Tailwind v4 CSS-first config. Consume via semantic utilities
+ * (bg-surface, text-brand, etc.) instead of raw palette shades.
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Brand */
+  --color-brand: #be123c;        /* Rose-700 */
+  --color-brand-hover: #9f1239;  /* Rose-800 */
+  --color-brand-soft: #fff1f2;   /* Rose-50  */
+  --color-accent: #f59e0b;       /* Amber-500 */
+  --color-accent-soft: #fffbeb;  /* Amber-50  */
+
+  /* Neutrals (Stone scale) */
+  --color-canvas: #fafaf9;       /* Stone-50  */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f5f4;/* Stone-100 */
+  --color-border: #e7e5e4;       /* Stone-200 */
+  --color-border-strong: #d6d3d1;/* Stone-300 */
+  --color-ink: #1c1917;          /* Stone-900 */
+  --color-ink-soft: #57534e;     /* Stone-600 */
+  --color-ink-faint: #a8a29e;    /* Stone-400 */
+
+  /* Dark (admin) surfaces */
+  --color-night: #0c0a09;        /* Stone-950 */
+  --color-night-elevated: #1c1917;/* Stone-900 */
+  --color-night-border: #292524; /* Stone-800 */
+  --color-night-ink: #f5f5f4;    /* Stone-100 */
+  --color-night-ink-soft: #a8a29e;/* Stone-400 */
+
+  /* Radii */
+  --radius-card: 1.5rem;         /* rounded-3xl */
+
+  /* Font */
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-muted);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-faint);
+}
+
+/* ------------------------------------------------------------------ *
+ * Reusable utilities
+ * ------------------------------------------------------------------ */
+.hover-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(190, 18, 60, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-brand) 0%, #db2777 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Surface helpers mapped to the token system */
+.bg-canvas { background-color: var(--color-canvas); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-surface-muted { background-color: var(--color-surface-muted); }
+.text-brand { color: var(--color-brand); }
+.text-ink { color: var(--color-ink); }
+.text-ink-soft { color: var(--color-ink-soft); }
+.border-app { border-color: var(--color-border); }
