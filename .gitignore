@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Git
+.git/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+
+# Test coverage
+coverage/
+
+# Misc
+.DS_Store
+*.pem
